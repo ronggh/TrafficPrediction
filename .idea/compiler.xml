@@ -6,7 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="TrafficPrediction" />
+        <module name="tp_consumer" />
+        <module name="tp_modeling" />
+        <module name="tp_prediction" />
+        <module name="tp_producer" />
       </profile>
     </annotationProcessing>
   </component>

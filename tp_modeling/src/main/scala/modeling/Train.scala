@@ -164,6 +164,7 @@ object Train {
         println("评估值：" + accuracy)
         writer.write(accuracy.toString + "\r\n")
         //评估值范围为[0.0, 1.0]，越大model越优秀，我们保存评估值大于0的评估模型
+        // 一般需要大于0.6
         if (accuracy > 0.0) {
           //将模型保存到hdfs中，并将模型路径保存到redis中
           //val hdfsPath = "hdfs://192.168.154.101:8020/traffic/model/" + monitorID + "_" + new SimpleDateFormat("yyyyMMddHHmmss").format(currentDate.getTime)

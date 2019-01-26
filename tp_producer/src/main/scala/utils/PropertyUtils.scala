@@ -11,13 +11,13 @@ object PropertyUtils {
     val inputStream = ClassLoader.getSystemResourceAsStream("kafka.properties")
     //println(inputStream)
     properties.load(inputStream)
-    println(properties)
-    println(properties.getProperty("bootstrap.servers"))
+    //println(properties)
+    //println(properties.getProperty("bootstrap.servers"))
   }catch {
     case ex:Exception => println(ex)
   }finally {}
 
   // 通过key得到kafka的属性值
-  def getProp(key: String): String = properties.getProperty(key)
+  def getProperty(key: String): String = properties.getProperty(key)
 
 }

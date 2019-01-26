@@ -15,18 +15,18 @@ object Producer {
   def main(args: Array[String]): Unit = {
     // 读取Kafka配置信息
     val props = PropertyUtils.properties
-    props.put("bootstrap.servers", "192.168.154.101:9092")
-    props.put("acks", "all")
-    props.put("retries", "0")
-    props.put("batch.size", "16384")
-    props.put("linger.ms", "1")
-    props.put("buffer.memory", "33554432")
-    props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-    props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-    props.put("kafka.topics", "traffic")
+    //    props.put("bootstrap.servers", "192.168.154.101:9092")
+    //    props.put("acks", "all")
+    //    props.put("retries", "0")
+    //    props.put("batch.size", "16384")
+    //    props.put("linger.ms", "1")
+    //    props.put("buffer.memory", "33554432")
+    //    props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
+    //    props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
+    //    props.put("kafka.topics", "traffic")
 
     // 创建Kafka生产者对象
-   val producer = new KafkaProducer[String, String](props)
+    val producer = new KafkaProducer[String, String](props)
 
     // 模拟产生实时车速，5分钟切换一次随机数范围
     var startTime = Calendar.getInstance().getTimeInMillis() / 1000
@@ -62,7 +62,7 @@ object Producer {
       println(json)
 
       // 发送到Kafka
-      producer.send(new ProducerRecord[String,String](props.get("kafka.topics").toString,json.toString))
+      producer.send(new ProducerRecord[String, String](props.getProperty("kafka.topics"), json.toString))
 
       Thread.sleep(200)
 

@@ -25,6 +25,7 @@ object Prediction {
     val hourMinuteSDF = new SimpleDateFormat("HHmm")
     val userSDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
+    //
     val inputDateString = "2019-1-26 21:00:00"
     val inputDate = userSDF.parse(inputDateString)
 

@@ -22,6 +22,7 @@ object SparkConsumer {
     val kafkaParams = Map("metadata.broker.list" -> PropertyUtils.getProperty("metadata.broker.list"))
     val topics = Set(PropertyUtils.getProperty("kafka.topics"))
     // 从Kafka中读数据,只需要从值中取，数据形式如：{"monitorId":"0015","speed":"035"}
+    // createDirectStream()返回InputStream[k,v]格式:Map(monitorId -> 0003, speed -> 043)
     val kafkaLineDStream = KafkaUtils.createDirectStream[
       String,
       String,
@@ -29,13 +30,15 @@ object SparkConsumer {
       StringDecoder](ssc, kafkaParams, topics)
       .map(_._2)
 
-    // 解析json字符串
+
+    // 解析json字符串，line格式：
     //使用fastjson解析基于事件的每一条数据到Java的HashMap中
     val event = kafkaLineDStream.map(line => {
       val lineJavaMap = JSON.parseObject(line, new TypeReference[java.util.Map[String, String]](){})
       //将Java的HashMap转为Scala的mutable.Map
       import scala.collection.JavaConverters._
       val lineScalaMap: collection.mutable.Map[String, String] = mapAsScalaMapConverter(lineJavaMap).asScala
+      // 格式:Map(monitorId -> 0003, speed -> 043)
       println(lineScalaMap)
       lineScalaMap
     })
@@ -45,6 +48,7 @@ object SparkConsumer {
     val sumOfSpeedAndCount = event
       .map(e => (e.get("monitorId").get, e.get("speed").get))  // ("0005","80")
       .mapValues(s => (s.toInt, 1))                            // ("0005",(80,1))
+
       //timeWindow为20秒，slideTime为10秒，严格意义应该设置为：60, 60,
       // 即，每隔60秒，统计60秒内的数据，因为我们打算按照分钟来采集数据
       // 对形如("0005",(80,1))和("0005",(58,1))的一系列数据进行聚合
@@ -80,6 +84,7 @@ object SparkConsumer {
           //选择存入的数据库
           jedis.select(dbIndex)
           jedis.hset(date + "_" + monitorId, hourMinuteTime, sumOfSpeed + "_" + sumOfCarCount)
+          // 格式：20190126_0006
           println(date + "_" + monitorId)
           RedisUtils.jedisPool.returnResource(jedis)
         })

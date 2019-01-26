@@ -31,7 +31,7 @@ object RedisUtils {
   config.setNumTestsPerEvictionRun(10)
   //表示一个对象至少停留在idle状态的最短时间，然后才能被idle object evitor扫描并驱逐；这一项只有在timeBetweenEvictionRunsMillis大于0时才有意义
   config.setMinEvictableIdleTimeMillis(60000)
-  //连接池
+  // 懒加载的连接池
   lazy val jedisPool  = new JedisPool(config, host, port, timeout)
 
   //释放资源

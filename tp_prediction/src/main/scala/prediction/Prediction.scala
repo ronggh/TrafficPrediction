@@ -32,10 +32,10 @@ object Prediction {
     val dayOfInputDate = dateSDF.format(inputDate)
     val hourMinuteOfInputDate = hourMinuteSDF.format(inputDate)
 
-    val monitorIDs = List("0005", "0015")
+    val monitorIDs = List("0005", "0016")
     val monitorRelations = Map[String, Array[String]](
       "0005" -> Array("0003", "0004", "0005", "0006", "0007"),
-      "0015" -> Array("0013", "0014", "0015", "0016", "0017"))
+      "0016" -> Array("0014", "0015", "0016", "0017", "0018"))
 
     //从redis中读取数据
     //redis的数据库索引
